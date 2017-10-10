@@ -810,6 +810,15 @@ static int do_wait_for_prop(const std::vector<std::string>& args) {
     return 0;
 }
 
+static int do_pipe(const std::vector<std::string>& args) {
+    mode_t mode = get_mode(args[1].c_str());
+    if (mkfifo(args[2].c_str(), mode) < 0) {
+        ERROR("peter do pipe error haha\n");
+        return -errno;
+    }
+    return 0;
+}
+
 /*
  * Callback to make a directory from the ext4 code
  */
@@ -889,6 +898,7 @@ BuiltinFunctionMap::Map& BuiltinFunctionMap::map() const {
         {"verity_update_state",     {0,     0,    do_verity_update_state}},
         {"wait",                    {1,     2,    do_wait}},
         {"wait_for_prop",           {2,     2,    do_wait_for_prop}},
+        {"pipe",                    {1,     2,    do_pipe}},
         {"write",                   {2,     2,    do_write}},
     };
     // clang-format on

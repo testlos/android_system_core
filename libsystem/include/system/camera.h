@@ -201,6 +201,10 @@ enum {
      * of SW_READ_OFTEN.
      */
     CAMERA_CMD_SET_VIDEO_FORMAT = 11,
+    CAMERA_CMD_SET_FLIP_ON = 12,
+    MULTI_FRAME_SHOT_START            = 1261,
+    AUTO_LOW_LIGHT_SET                = 1351,
+    HDR_PICTURE_MODE_CHANGE           = 1273,
 
     CAMERA_CMD_VENDOR_START = 20,
     /**
@@ -342,6 +346,11 @@ typedef struct camera_frame_metadata {
      * An array of the detected faces. The length is number_of_faces.
      */
     camera_face_t *faces;
+
+    /**
+     * Value for low light condition
+     */
+    int32_t light_condition;
 } camera_frame_metadata_t;
 
 __END_DECLS
