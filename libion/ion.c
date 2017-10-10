@@ -31,6 +31,11 @@
 #include <linux/ion.h>
 #include <ion/ion.h>
 
+struct file;
+
+#include <stdbool.h>
+#include "ion_sprd.h"
+
 int ion_open()
 {
     int fd = open("/dev/ion", O_RDWR);
@@ -167,6 +172,16 @@ int ion_import(int fd, int share_fd, ion_user_handle_t *handle)
         return ret;
     *handle = data.handle;
     return ret;
+}
+
+int ion_invalidate_fd(int fd, int handle_fd)
+{
+	struct ion_custom_data custom_data;
+	if (handle_fd < 0)
+		return -EINVAL;
+	custom_data.cmd = ION_SPRD_CUSTOM_INVALIDATE;
+	custom_data.arg = (unsigned long)handle_fd;
+	return ioctl(fd, ION_IOC_CUSTOM, &custom_data);
 }
 
 int ion_sync_fd(int fd, int handle_fd)
